@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="grid-container">
     <v-container fluid>
       <v-row>
         <v-col
@@ -20,7 +20,14 @@
                   v-for="author in book.authors"
                   v-text="author ? author.name : ''"
                 ></v-card-subtitle>
-                <BookDetails :bookId="book.id" />
+                <v-btn
+                  class="ma-5"
+                  outlined
+                  rounded
+                  small
+                  @click="openBookDetails(book.id)"
+                  >See details</v-btn
+                >
               </div>
               <v-avatar class="ma-3" width="170px" height="240px" tile>
                 <v-img
@@ -31,6 +38,7 @@
             </div>
           </v-card>
         </v-col>
+        <BookDetails :bookId="bookId" />
       </v-row>
     </v-container>
   </div>
@@ -42,15 +50,26 @@ import BookDetails from "./BookDetails";
 export default {
   name: "BooksGrid",
   vuetify: new Vuetify(),
+  data() {
+    return {
+      bookId: 0,
+    };
+  },
   components: { BookDetails },
   props: ["books"],
-  created() {
-    console.log(this.books);
+  methods: {
+    openBookDetails(bookId) {
+      this.bookId = bookId;
+    },
   },
 };
 </script>
 
 <style>
+.grid-container {
+  height: 90vh;
+  overflow: auto;
+}
 .book-details {
   width: 50%;
 }

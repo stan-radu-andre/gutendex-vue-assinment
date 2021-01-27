@@ -1,18 +1,10 @@
 <template>
   <v-col cols="auto">
-    <v-dialog transition="dialog-bottom-transition" max-width="600">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          class="ma-5"
-          outlined
-          rounded
-          small
-          v-bind="attrs"
-          v-on="on"
-          @click="fetchBook()"
-          >See details</v-btn
-        >
-      </template>
+    <v-dialog
+      v-model="dialog"
+      transition="dialog-bottom-transition"
+      max-width="600"
+    >
       <template v-slot:default="dialog">
         <v-card color="#1F7087" dark height="470px">
           <div class="d-flex flex-no-wrap justify-space-between">
@@ -66,11 +58,14 @@ export default {
   computed: mapGetters(["openedBook"]),
   methods: {
     ...mapActions(["fetchBooks", "fetchBookById"]),
-    fetchBook() {
-      this.fetchBookById(this.bookId);
-    },
   },
   props: ["bookId"],
+  watch: {
+    bookId: function (newVal) {
+      this.dialog = true;
+      this.fetchBookById(newVal);
+    },
+  },
 };
 </script>
 
